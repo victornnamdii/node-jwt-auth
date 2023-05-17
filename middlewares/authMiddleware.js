@@ -1,12 +1,13 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const secretKey = process.env.SECRET_KEY
 
 const requireAuth = (req, res, next) => {
 
   const token = req.cookies.jwt;
 
   if (token) {
-    jwt.verify(token, 'Add secret key here', (err, decodedToken) => {
+    jwt.verify(token, secretKey, (err, decodedToken) => {
       if (err) {
         res.redirect('/login');
       } else {
@@ -23,7 +24,7 @@ const dontRequireAuth = (req, res, next) => {
   const token = req.cookies.jwt;
 
   if (token) {
-    jwt.verify(token, 'Add secret key here', (err, decodedToken) => {
+    jwt.verify(token, secretKey, (err, decodedToken) => {
       if (err) {
         next();
       } else {
@@ -39,7 +40,7 @@ const checkUser = (req, res, next) => {
   const token = req.cookies.jwt;
 
   if (token) {
-    jwt.verify(token, 'Add secret key here', async (err, decodedToken) => {
+    jwt.verify(token, secretKey, async (err, decodedToken) => {
       if (err) {
         res.locals.user = null;
         next();
